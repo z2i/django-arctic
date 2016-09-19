@@ -57,6 +57,10 @@
         color: $white;
         font-size: 0.8rem;
         font-weight: normal;
+        margin: .155rem .2rem .155rem 0;
+        color: $white;
+        border-radius: $borderRadiusSmall;
+        cursor: pointer;
     }
 
     .remove {
@@ -68,15 +72,9 @@
 .selectize-control.multi {
     .selectize-input {
         .item {
-            margin: .155rem .2rem .155rem 0;
-            color: $white;
-            background: $green;
-            border-radius: $borderRadiusSmall;
-            cursor: pointer;
             border: 1px solid transparent;
 
             &.active {
-                background: darken($green, 10%);
                 border-color: rgba(0,0,0,0.3)
             }
         }
