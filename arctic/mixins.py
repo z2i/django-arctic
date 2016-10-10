@@ -53,6 +53,19 @@ class LinksMixin(object):
             return allowed_links
 
 
+class ReadOnlyMixin(object):
+    """
+    Adding read-only attribute to field
+    """
+    readonly_fields = []
+
+    def get_readonly_fields(self):
+        return readonly_fields
+
+    def is_readonly(self, fieldname):
+        return fieldname in readonly_fields
+
+
 class RoleAuthentication():
     """
     This class adds a role relation to the standard django auth user to add

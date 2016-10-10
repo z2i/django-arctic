@@ -17,7 +17,7 @@ from django.views import generic as base
 import extra_views
 
 from .filters import filterset_factory
-from .mixins import (LinksMixin, RoleAuthentication, SuccessMessageMixin)
+from .mixins import (LinksMixin, RoleAuthentication, SuccessMessageMixin, ReadOnlyMixin)
 from .utils import (find_attribute, find_field_meta, get_attribute, menu)
 
 
@@ -418,7 +418,8 @@ class ListView(View, base.ListView):
         return context
 
 
-class CreateView(View, SuccessMessageMixin, base.CreateView):
+class CreateView(View, SuccessMessageMixin, base.CreateView,
+                 ReadOnlyMixin):
     template_name = 'arctic/base_create_update.html'
     success_message = _('%(object)s was created successfully')
 
@@ -429,7 +430,8 @@ class CreateView(View, SuccessMessageMixin, base.CreateView):
 
 
 class UpdateView(SuccessMessageMixin, View, LinksMixin,
-                 extra_views.UpdateWithInlinesView):
+                 extra_views.UpdateWithInlinesView,
+                 ReadOnlyMixin):
     template_name = 'arctic/base_create_update.html'
     success_message = _('%(object)s was updated successfully')
 
@@ -446,7 +448,8 @@ class UpdateView(SuccessMessageMixin, View, LinksMixin,
         return context
 
 
-class FormView(View, SuccessMessageMixin, base.FormView):
+class FormView(View, SuccessMessageMixin, base.FormView,
+               ReadOnlyMixin):
     template_name = 'arctic/base_create_update.html'
 
 

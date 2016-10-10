@@ -19,7 +19,7 @@
                             <!-- {{ field|widget_type }} -->
                             {# checkbox #}
                             {% if field|widget_type == 'checkboxinput' %}
-                                <label for="{{ field.auto_id }}" class="{% if field.field.required %}required{% endif %}">
+                                <label for="{{ field.auto_id }}" class="{% if field.field.required %}required{% endif %}" {{ field.readonly }}>
 
                                     {% if field.field.required %}
                                         {% render_field field|attr:'required' %}
