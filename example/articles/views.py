@@ -22,6 +22,7 @@ class DashboardView(TemplateView):
 
 
 class ArticleListView(ListView):
+    template_name = 'arctic/article_list.html'
     paginate_by = 2
     model = Article
     fields = ['title', 'description', 'published', 'category']
@@ -46,8 +47,8 @@ class ArticleListView(ListView):
     filter_fields = ['published']
     permission_required = "articles_view"
 
-    # def get_category_field(self, row):
-    #     return '<b>' + row.category.name + '</b>'
+    def get_category_field(self, row):
+        return row.category.name
 
 
 class ArticleUpdateView(UpdateView):
@@ -72,7 +73,6 @@ class ArticleUpdateView(UpdateView):
     #     ('Detail', 'articles:detail'),
     #     ('Tags', 'articles:detail-tags'),
     # ]
-    permission_required = ""
 
     def get_urls(self):
         return {

@@ -8,9 +8,10 @@ from django.core.exceptions import (FieldDoesNotExist)
 from django.core.urlresolvers import (NoReverseMatch, reverse)
 from django.db.models.deletion import (Collector, ProtectedError)
 from django.shortcuts import (redirect, render, resolve_url)
+from django.utils.formats import get_format
 from django.utils.http import quote
 from django.utils.text import capfirst
-from django.utils.translation import ugettext as _
+from django.utils.translation import (get_language, ugettext as _)
 from django.views import generic as base
 
 import extra_views
@@ -153,9 +154,12 @@ class View(RoleAuthentication, base.View):
     def get_datetime_formats(self):
         dtformats = {}
 
-        dtformats['SHORT_DATE'] = settings.DATE_INPUT_FORMATS[0]
-        dtformats['TIME'] = settings.TIME_INPUT_FORMATS[0]
-        dtformats['SHORT_DATETIME'] = settings.DATETIME_INPUT_FORMATS[0]
+        dtformats['SHORT_DATE'] = get_format('DATE_INPUT_FORMATS',
+                                             get_language())[0]
+        dtformats['TIME'] = get_format('TIME_INPUT_FORMATS',
+                                       get_language())[0]
+        dtformats['SHORT_DATETIME'] = get_format('DATETIME_INPUT_FORMATS',
+                                                 get_language())[0]
 
         return dtformats
 
@@ -205,6 +209,7 @@ class ListView(View, base.ListView):
     action_links = []  # "Action" links on item level. For example "Edit"
     field_links = {}
     field_classes = {}
+    tool_links_icon = 'fa-wrench'
     tool_links = []   # Global links. For Example "Add object"
     prefix = ''  # Prefix for embedding multiple list views in detail view
 
@@ -409,6 +414,9 @@ class ListView(View, base.ListView):
                                            'icon': icon})
             return allowed_tool_links
 
+    def get_tool_links_icon(self):
+        return self.tool_links_icon
+
     def get_prefix(self):
         return self.prefix + '-' if self.prefix else ''
 
@@ -470,6 +478,7 @@ class ListView(View, base.ListView):
         context['list_items'] = self.get_list_items(context['object_list'])
         context['action_links'] = self.get_action_links()
         context['tool_links'] = self.get_tool_links()
+        context['tool_links_icon'] = self.get_tool_links_icon()
         if self.filter_fields or self.search_fields:
             context['has_filter'] = True
             context['filter'] = self.filterset
